@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-
+from .models import Profile
 class CustomCreationForm(UserCreationForm):
     class Meta:
         model=User
@@ -11,6 +11,20 @@ class CustomCreationForm(UserCreationForm):
         }
     def __init__(self,*args,**kwargs):
         super(CustomCreationForm,self).__init__(*args,**kwargs)
+
+        for k,v in self.fields.items():
+            v.widget.attrs.update({'class':'input'})
+
+class ProfileForm(ModelForm):
+    class Meta:
+        model=Profile
+        fields=['name','email','username','location','bio','short_intro','profile_image',
+                'social_github','social_linkedin','social_twitter','social_youtube','social_website']
+        # labels = {
+        #     'name':'Name',
+        # }
+    def __init__(self,*args,**kwargs):
+        super(ProfileForm,self).__init__(*args,**kwargs)
 
         for k,v in self.fields.items():
             v.widget.attrs.update({'class':'input'})
