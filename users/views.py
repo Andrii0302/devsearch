@@ -25,7 +25,7 @@ def loginUser(request):
     return render(request,'users/login_register.html')
 def logoutUser(request):
     logout(request)
-    messages.success(request,'User was logged out')
+    messages.info(request,'User was logged out')
     return redirect('login')
 def registerUser(request):
     page='register'
