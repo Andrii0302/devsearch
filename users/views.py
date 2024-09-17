@@ -5,6 +5,8 @@ from django.contrib import messages
 from .models import Profile
 from django.contrib.auth.models import User
 from .forms import CustomCreationForm,ProfileForm,SkillForm
+from django.db.models import Q
+from .utils import searchProfiles
 def loginUser(request):
     page='login'
     if request.user.is_authenticated:
@@ -44,9 +46,11 @@ def registerUser(request):
             messages.error(request,'An error has occurred during registration')
     context={'page':page,'form':form}
     return render(request,'users/login_register.html',context)
+
 def profiles(request):
-    profiles=Profile.objects.all()
-    context={'profiles':profiles}
+    profiles,search_query=searchProfiles(request)
+    #profiles=Profile.objects.all()
+    context={'profiles':profiles, 'search_query':search_query}
     return render(request, 'users/profiles.html',context)
 def userProfile(request,pk):
     profile=Profile.objects.get(id=pk)
