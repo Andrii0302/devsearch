@@ -1,4 +1,4 @@
-from .models import Project
+from .models import Project,Review
 from django.forms import ModelForm
 from django import forms
 class ProjectForm(ModelForm):
@@ -20,3 +20,15 @@ class ProjectForm(ModelForm):
         # self.fields['tags'].widget.attrs.update({'class':'input'})
         for k,v in self.fields.items():
             v.widget.attrs.update({'class':'input'})
+class ReviewForm(ModelForm):
+    class Meta:
+        model=Review
+        fields = ['value','body']
+        labels={
+            'value':'Place your vote',
+            'body':'Add a comment with your vote'
+        }
+    def __init__(self,*args,**kwargs):
+        super(ReviewForm,self).__init__(*args,**kwargs)
+        self.fields['value'].widget.attrs.update({'class':'input'})
+        self.fields['body'].widget.attrs.update({'class':'input'})
