@@ -40,6 +40,7 @@ input.input[type='text'],
 input.input[type='email'],
 input.input[type='password'],
 input.input[type='number'],
+select.input,
 textarea.input {
   min-width: 24rem;
   width: 100%;
