@@ -14,4 +14,5 @@ urlpatterns = [
     path('inbox/',views.inbox,name='inbox'),
     path('message/<str:pk>/',views.inboxMessage,name='message'),
     path('create-message/<str:pk>/',views.createMessage,name='create-message'),
+    
 ]
