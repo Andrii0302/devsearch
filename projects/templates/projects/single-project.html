@@ -40,23 +40,29 @@
             <h5 class="project--rating">
               {{ project.vote_ratio }}% Postitive Feedback ({{ project.vote_total}} Vote{{ project.vote_total|pluralize:"s" }})
             </h5>
-
+            {% if request.user.profile.id in project.reviwers %}
+            <p>You have already submitted your review for this project</p>
+            {% elif request.user.profile == project.owner %}
+            <p>You cannot review your own work</p>
+            {% elif request.user.is_authenticated %}
             <form class="form" action="{% url 'project' project.id %}" method="POST">
-              
+              {% csrf_token %}
               {% for field in form %}
               <div class="form__field">
                 <label for="formInput#textarea">{{ field.label }}</label>
-                
                 {{ field }}
               </div>
               {% endfor %}
               <input class="btn btn--sub btn--lg" type="submit" value="Add Review" />
             </form>
+            {% else %}
+            <a href="{% url 'login' %}?next={{request.path}}">Please login to leave a review</a>
+            {% endif %}
             <div class="commentList">
               {% for review in project.review_set.all %}
               {% if review.body %}
               <div class="comment">
-                <a href="profile.html">
+                <a href="{% url 'user-profile' review.owner.id %}">
                   <img class="avatar avatar--md"
                     src="{{ review.owner.profile_image.url }}" alt="user" />
                 </a>

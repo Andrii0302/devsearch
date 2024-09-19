@@ -23,12 +23,11 @@ class ProjectForm(ModelForm):
 class ReviewForm(ModelForm):
     class Meta:
         model=Review
-        fields = ['value','body']
+        fields=['value','body']
         labels={
-            'value':'Place your vote',
-            'body':'Add a comment with your vote'
+            'value':'Place tour vote','body':'Add a comment with your vote'
         }
     def __init__(self,*args,**kwargs):
         super(ReviewForm,self).__init__(*args,**kwargs)
-        self.fields['value'].widget.attrs.update({'class':'input'})
-        self.fields['body'].widget.attrs.update({'class':'input'})
+        for k,v in self.fields.items():
+            v.widget.attrs.update({'class':'input'})

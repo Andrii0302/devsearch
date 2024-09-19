@@ -17,7 +17,21 @@ class Project(models.Model):
     def __str__(self):
         return f'{self.title}'
     class Meta:
-        ordering=['created']
+        ordering=['-vote_ratio','-vote_total']
+    @property
+    def reviwers(self):
+        queryset = self.review_set.all().values_list('owner__id',flat=True)
+        return queryset
+    @property
+    def getVoteCount(self):
+        reviews = self.review_set.all()
+        upVotes = reviews.filter(value='up').count()
+        totalVotes = reviews.count()
+        ratio = (upVotes / totalVotes) * 100
+        self.vote_total = totalVotes
+        self.vote_ratio = ratio
+        self.save()
+
 class Review(models.Model):
     VOTE_TYPE=(
         ('up','Up Vote'),
@@ -33,6 +47,7 @@ class Review(models.Model):
         unique_together=[['owner','project']]
     def __str__(self):
         return self.value
+
 class Tag(models.Model):
     name=models.CharField(max_length=200)
     created=models.DateTimeField(auto_now_add=True)
